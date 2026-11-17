@@ -1,0 +1,30 @@
+---
+import { site } from "../../site.config.mjs";
+import { projects, routes, type Lang } from "../data/studio";
+interface Props {
+  p: (typeof projects)[number];
+  l: Lang;
+}
+const { p, l } = Astro.props;
+---
+
+<a class="tile" href={routes(l, p.section + "/" + p.id)}>
+  <div class="cover">
+    <img
+      src={site.base + "art/" + p.art + ".webp"}
+      width="900"
+      height="540"
+      loading="lazy"
+      alt=""
+    />
+  </div>
+  <div class="tile-head">
+    <h3>{p.name}</h3>
+    <span aria-hidden="true">↗</span>
+  </div>
+  <span class="meta">
+    {p.category[l]} · {p.platform[l]}
+  </span>
+  <p>{p.description[l]}</p>
+  <small>{p.status[l]}</small>
+</a>

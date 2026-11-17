@@ -1,0 +1,222 @@
+---
+import Frame from "../components/Frame.astro";
+import Tile from "../components/Tile.astro";
+import { copy as c } from "../data/copy";
+import { projects, routes, slugs, type Lang } from "../data/studio";
+import { links } from "../data/studio";
+import { site } from "../../site.config.mjs";
+export function getStaticPaths() {
+  return (["en", "zh"] as Lang[]).flatMap((l) =>
+    slugs.map((slug) => ({
+      params: {
+        path:
+          [l === "zh" ? "zh" : "", slug].filter(Boolean).join("/") || undefined,
+      },
+      props: { l, slug },
+    })),
+  );
+}
+const { l, slug } = Astro.props;
+const p = projects.find((p) => p.section + "/" + p.id === slug);
+const productList = projects.filter((p) => p.section === "products");
+const diary = projects.find((p) => p.section === "lab")!;
+const title = p
+  ? p.name
+  : slug === "products"
+    ? c.products[l]
+    : slug === "lab"
+      ? c.ll[l]
+      : slug === "about"
+        ? c.about[l]
+        : c.hero[l];
+const description = p
+  ? p.description[l]
+  : slug === "products"
+    ? c.pl[l]
+    : slug === "lab"
+      ? c.ls[l]
+      : c.intro[l];
+---
+
+<Frame lang={l} slug={slug} title={title} description={description}>
+  {slug === "" && (
+    <>
+      <section class="hero">
+        <div class="hero-text">
+          <h1>
+            {l === "en" ? (
+              <>
+                Human <em>+</em>
+                <br />
+                Intelligence.
+              </>
+            ) : (
+              <>
+                人类 <em>+</em>
+                <br />
+                智能。
+              </>
+            )}
+          </h1>
+          <p>{c.intro[l]}</p>
+          <div class="actions">
+            <a class="button" href={routes(l, "products")}>
+              {c.explore[l]} <span>↗</span>
+            </a>
+            <a class="under" href={routes(l, "about")}>
+              {c.meet[l]}
+            </a>
+          </div>
+        </div>
+        <img
+          class="hero-art"
+          src={site.base + "art/chips.webp"}
+          width="1340"
+          height="893"
+          fetchpriority="high"
+          alt={c.catAlt[l]}
+        />
+      </section>
+      <section class="shelf">
+        <div class="section-title">
+          <h2>{c.featured[l]}</h2>
+          <a class="under" href={routes(l, "products")}>
+            {c.all[l]} →
+          </a>
+        </div>
+        <div class="grid">
+          {productList
+            .filter((p) => p.store)
+            .map((p) => (
+              <Tile p={p} l={l} />
+            ))}
+        </div>
+      </section>
+      <section class="lab-strip">
+        <div>
+          <span class="meta">{c.lab[l]}</span>
+          <h2>Project Diary</h2>
+          <p>{diary.description[l]}</p>
+        </div>
+        <a class="button" href={routes(l, "lab/project-diary")}>
+          {c.more[l]} ↗
+        </a>
+      </section>
+    </>
+  )}
+  {slug === "products" && (
+    <>
+      <div class="page-title">
+        <h1>{c.products[l]}</h1>
+        <p>{c.pl[l]}</p>
+      </div>
+      <div class="grid">
+        {productList.map((p) => (
+          <Tile p={p} l={l} />
+        ))}
+      </div>
+    </>
+  )}
+  {slug === "lab" && (
+    <>
+      <div class="page-title">
+        <h1>{c.ll[l]}</h1>
+        <p>{c.ls[l]}</p>
+      </div>
+      <section class="split">
+        <img
+          class="wide-art"
+          src={site.base + "art/diary.webp"}
+          width="900"
+          height="540"
+          alt=""
+        />
+        <div class="reading">
+          <span class="meta">{diary.status[l]}</span>
+          <h2>Project Diary</h2>
+          <p>{diary.details[l]}</p>
+          <a class="button" href={routes(l, "lab/project-diary")}>
+            {c.facts[l]} →
+          </a>
+        </div>
+      </section>
+    </>
+  )}
+  {slug === "about" && (
+    <section class="split about">
+      <div class="reading">
+        <h1>{c.ah[l]}</h1>
+        <p>{c.a1[l]}</p>
+        <p>{c.a2[l]}</p>
+        <p>{c.a3[l]}</p>
+        <div class="actions">
+          <a class="button" href={site.portfolio + (l === "zh" ? "zh/" : "")}>
+            {c.portfolio[l]} ↗
+          </a>
+          <a class="under" href={site.profile}>
+            {c.contact[l]} ↗
+          </a>
+        </div>
+      </div>
+      <img
+        class="hero-art"
+        src={site.base + "art/chips.webp"}
+        width="1340"
+        height="893"
+        alt={c.catAlt[l]}
+      />
+    </section>
+  )}
+  {p && (
+    <>
+      <a class="back" href={routes(l, p.section)}>
+        ← {c[p.section === "products" ? "products" : "lab"][l]}
+      </a>
+      <section class="detail">
+        <div>
+          <span class="meta">{p.category[l]}</span>
+          <h1>{p.name}</h1>
+          <p class="lead">{p.description[l]}</p>
+        </div>
+        <figure>
+          <img
+            class="wide-art"
+            src={site.base + "art/" + p.art + ".webp"}
+            alt=""
+            width="900"
+            height="540"
+          />
+          <figcaption>{c.artwork[l]}</figcaption>
+        </figure>
+      </section>
+      <section class="notes">
+        <div class="reading">
+          <h2>{c.facts[l]}</h2>
+          <p>{p.details[l]}</p>
+          <p>{p.limits[l]}</p>
+        </div>
+        <dl>
+          {[
+            [c.platform[l], p.platform[l]],
+            [c.state[l], p.status[l]],
+            [c.license[l], p.code[l]],
+            [c.date[l], site.verified],
+          ].map(([a, b]) => (
+            <div>
+              <dt>{a}</dt>
+              <dd>{b}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section class="resource">
+        <h2>{c.resources[l]}</h2>
+        <div>
+          {links(p, l).map((x) => (
+            <a href={x.url}>{x.label} ↗</a>
+          ))}
+        </div>
+      </section>
+    </>
+  )}
+</Frame>

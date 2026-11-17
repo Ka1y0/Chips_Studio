@@ -1,0 +1,55 @@
+import { two } from "./studio";
+export const copy = {
+  products: two("Products", "产品"),
+  lab: two("Lab", "实验室"),
+  about: two("Studio", "工作室"),
+  home: two("Home", "首页"),
+  hero: two("Human + Intelligence.", "人类 + 智能。"),
+  intro: two(
+    "An independent AI-native studio by Kaiyo. We make tools for daily rhythms, conversation and image-making, under the watchful eye of Chips the cat.",
+    "由 Kaiyo 推进的独立 AI 原生工作室。我们制作日常节律、对话与影像工具，布偶猫 Chips 在一旁监工。",
+  ),
+  explore: two("Explore products", "浏览产品"),
+  meet: two("Meet the studio", "认识工作室"),
+  featured: two("Our products", "我们的产品"),
+  all: two("Product index", "产品索引"),
+  more: two("Explore the lab", "探索实验室"),
+  pl: two(
+    "Tools for reading daily rhythms, talking, translating and seeing. Explore each project and its current public materials.",
+    "从日常节律观察，到对话、翻译与摄影。了解每个产品的用途与当前公开资料。",
+  ),
+  ll: two("The lab", "实验室"),
+  ls: two(
+    "Experiments in how people write, think and create with software.",
+    "探索人如何用软件书写、思考与创作。",
+  ),
+  ah: two("A small studio, by design.", "一间有意保持小巧的工作室。"),
+  a1: two(
+    "Kaiyo brings a background in art and design research to the daily work of building software. At Chips Studio, one human creator works with several AI collaborators.",
+    "Kaiyo 将艺术与设计研究背景带入日常的软件创作。在 Chips Studio／薯条工作室，一位人类创作者与多个 AI 协作。",
+  ),
+  a2: two(
+    "AI participates in research, design, implementation and testing. Kaiyo sets the direction, reviews the experience and decides when a project is ready to publish.",
+    "AI 参与研究、设计、实现与测试。Kaiyo 把握方向、判断体验，并决定何时发布。",
+  ),
+  a3: two(
+    "Chips is the ragdoll cat behind the studio’s name and its resident supervisor in the studio story.",
+    "Chips 是工作室名字背后的布偶猫，也是品牌故事里的常驻监工。",
+  ),
+  portfolio: two("Kaiyo’s portfolio", "Kaiyo 的个人主页"),
+  contact: two("Find Kaiyo on GitHub", "在 GitHub 找到 Kaiyo"),
+  facts: two("Project notes", "项目笔记"),
+  platform: two("Platform", "适用平台"),
+  state: two("Publication", "公开状态"),
+  license: two("Source availability", "源码状态"),
+  resources: two("Public resources", "公开资料"),
+  artwork: two("Original concept artwork", "原创概念插画"),
+  catAlt: two(
+    "Studio illustration of Chips beside a vintage computer and a yellow sun.",
+    "工作室插画：布偶猫 Chips 坐在老式电脑旁，背后有一轮金黄色的太阳。",
+  ),
+  skip: two("Skip to content", "跳至正文"),
+  date: two("Verified", "核验日期"),
+  footer: two("Independent AI-native studio", "独立 AI 原生工作室"),
+  notfound: two("Page not found", "页面未找到"),
+};

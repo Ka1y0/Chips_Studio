@@ -1,0 +1,25 @@
+---
+import Frame from "../components/Frame.astro";
+import { routes } from "../data/studio";
+---
+
+<Frame
+  lang="en"
+  slug=""
+  title="Page not found"
+  description="Return to Chips Studio."
+  error
+>
+  <div class="page-title">
+    <h1>Page not found.</h1>
+    <p lang="zh-Hans">页面未找到。</p>
+    <div class="actions">
+      <a class="button" href={routes("en")}>
+        Studio home →
+      </a>
+      <a class="under" href={routes("zh")} lang="zh-Hans">
+        返回中文首页
+      </a>
+    </div>
+  </div>
+</Frame>

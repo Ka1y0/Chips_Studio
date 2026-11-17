@@ -1,0 +1,101 @@
+---
+import { site } from "../../site.config.mjs";
+import { routes, type Lang } from "../data/studio";
+import { copy as c } from "../data/copy";
+import "../styles/main.css";
+interface Props {
+  lang: Lang;
+  slug: string;
+  title: string;
+  description: string;
+  error?: boolean;
+}
+const { lang: l, slug, title, description, error } = Astro.props;
+const zh = l === "zh";
+const url = (lang: Lang) => site.origin + routes(lang, slug);
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": site.origin + site.base + "#studio",
+  name: "Chips Studio",
+  alternateName: "薯条工作室",
+  url: site.origin + site.base,
+  description: c.footer[l],
+  sameAs: [site.social],
+  logo: site.origin + site.base + "favicon.svg",
+  founder: { "@type": "Person", name: "Kaiyo", url: site.portfolio },
+};
+---
+
+<!doctype html>
+<html lang={zh ? "zh-Hans" : "en"}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} · Chips Studio</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href={site.base + "favicon.svg"} />
+    {error ? (
+      <meta name="robots" content="noindex" />
+    ) : (
+      <>
+        <link rel="canonical" href={url(l)} />
+        <link rel="alternate" hreflang="en" href={url("en")} />
+        <link rel="alternate" hreflang="zh-Hans" href={url("zh")} />
+        <link rel="alternate" hreflang="x-default" href={url("en")} />
+      </>
+    )}
+    <meta property="og:title" content={title + " · Chips Studio"} />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url(l)} />
+    <meta
+      property="og:image"
+      content={site.origin + site.base + "art/chips.webp"}
+    />
+    <meta property="og:image:alt" content={c.catAlt[l]} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">
+      {c.skip[l]}
+    </a>
+    <header class="shell">
+      <a href={routes(l)} class="brand">
+        <img src={site.base + "favicon.svg"} alt="" width="38" height="38" />
+        Chips Studio
+      </a>
+      <nav aria-label={zh ? "主导航" : "Main navigation"}>
+        {(["products", "lab", "about"] as const).map((p) => (
+          <a
+            aria-current={slug.split("/")[0] === p ? "page" : undefined}
+            href={routes(l, p)}
+          >
+            {c[p][l]}
+          </a>
+        ))}
+      </nav>
+      <a
+        class="language"
+        hreflang={zh ? "en" : "zh-Hans"}
+        lang={zh ? "en" : "zh-Hans"}
+        href={routes(zh ? "en" : "zh", error ? "" : slug)}
+      >
+        {zh ? "English" : "中文"}
+      </a>
+    </header>
+    <main id="main" class="shell" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="shell">
+      <div>
+        <strong>Chips Studio</strong>
+        <small>{c.footer[l]}</small>
+      </div>
+      <a href={site.portfolio + (zh ? "zh/" : "")}>{c.portfolio[l]} ↗</a>
+      <a href={site.social}>X ↗</a>
+      <a href={site.profile}>GitHub ↗</a>
+    </footer>
+  </body>
+</html>
